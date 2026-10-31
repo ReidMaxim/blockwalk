@@ -1,0 +1,10 @@
+{
+  "geocoder": "https://photon.komoot.io/api/",
+  "overpass": "https://overpass-api.de/api/interpreter",
+  "elevation": "https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer",
+  "imagery": "https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer",
+  "buildingIndex": "https://bfppub.blob.core.windows.net/$web/2026-08-13/dataset-links.csv",
+  "lidarCatalog": "https://tnmaccess.nationalmap.gov/api/v1/products",
+  "lidarBucket": "https://usgs-lidar-public.s3.amazonaws.com/",
+  "buildingFeatures": "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/MSBFP2/FeatureServer/0"
+}

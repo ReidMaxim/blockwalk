@@ -1,0 +1,30 @@
+{
+  "origin": {
+    "lat": 44.1009685,
+    "lon": -70.1876829
+  },
+  "widthMeters": 720,
+  "baseElevation": 75.52,
+  "groundSize": 361,
+  "groundStep": 2,
+  "surfaceSize": 720,
+  "surfaceStep": 1,
+  "elevationRange": [
+    68.1,
+    91.81
+  ],
+  "lidarPoints": 2498389,
+  "lidarClasses": {
+    "1": 1118006,
+    "2": 1380383
+  },
+  "lidarYear": 2020,
+  "lidarProject": "ME_SouthCoastal_1_2020",
+  "lidarDepth": 11,
+  "sources": {
+    "ground": "https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer",
+    "aerial": "https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer",
+    "lidar": "https://usgs-lidar-public.s3.amazonaws.com/ME_SouthCoastal_1_2020/ept.json"
+  },
+  "notes": "Public-domain USGS/USDA data. Heights metres NAVD88 minus local ground origin. Lidar sampled to depth 11, about 0.6m horizontal sample spacing. Aerial imagery and lidar have different collection dates."
+}

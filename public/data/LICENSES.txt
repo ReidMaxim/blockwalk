@@ -1,0 +1,13 @@
+Blockwalk geographic data notices
+
+OpenStreetMap: © OpenStreetMap contributors. Open Database License 1.0.
+https://www.openstreetmap.org/copyright
+https://opendatacommons.org/licenses/odbl/1-0/
+
+USGS 3DEP / USDA NAIP: public-domain federal data. Source services and collection information are recorded in each world.
+
+Microsoft Global ML Building Footprints: Community Data License Agreement – Permissive, Version 2.0.
+https://github.com/microsoft/GlobalMLBuildingFootprints
+
+Data in this repository has been licensed by Microsoft under CLDA Permissive 2.0.
+Microsoft US Building Footprints, when supplied through the Esri feature service: © Microsoft Corporation. Open Database License 1.0. https://github.com/microsoft/USBuildingFootprints and https://opendatacommons.org/licenses/odbl/1-0/

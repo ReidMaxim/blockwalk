@@ -1,0 +1,3 @@
+import fs from 'node:fs';
+import { generateWorld } from './world.ts';
+export function loadTestWorld(){const root=new URL('../public/data/',import.meta.url);const json=p=>JSON.parse(fs.readFileSync(new URL(p,root)));const floats=p=>{const b=fs.readFileSync(new URL('survey/'+p,root));return new Float32Array(b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength));};const survey={ground:floats('ground.bin'),roofs:floats('roofs.bin'),canopy:floats('canopy.bin'),colors:new Uint8Array(fs.readFileSync(new URL('survey/colors.bin',root))),metadata:json('survey/metadata.json')};return generateWorld(json('neighborhood.json'),json('buildings.json'),survey);}
