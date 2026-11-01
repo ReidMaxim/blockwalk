@@ -1,6 +1,6 @@
 # Blockwalk · Portable voxel worlds
 
-A static browser app that turns real locations into walkable voxel neighborhoods. Search an address or enter coordinates, generate an area, download it as a portable `.blockwalk` world, and load saved worlds locally. The included detailed demo is centered near 266 Russell Street, Lewiston, Maine (44.1009685, -70.1876829).
+A static browser app that turns real locations into walkable voxel neighborhoods. Search an address or enter coordinates, generate an area, download it as a portable `.blockwalk` world, and load saved worlds locally. The default demo is centered at 1250 Turner Street, Auburn, Maine: Central Maine Community College (44.1321115, -70.2320624). It loads from the bundled `public/data/demo.blockwalk` world file; the original Russell Street survey remains as a regression-test fixture.
 
 ## Run
 
@@ -11,7 +11,7 @@ npm run dev
 
 Open the printed localhost URL. `npm run build` creates `dist/`; `npm test` runs geographic, survey, roof-fitting, and physics checks.
 
-WASD/arrow keys walk; Shift runs; Space hops. Mouse look uses pointer lock where available, with drag-to-look as fallback. V toggles bird's-eye view; drag/scroll orbits/zooms there. The sun button changes the lighting. M expands the map; Escape pauses. “Back to house” returns to the Russell Street approach facing the building at the selected address. Touch devices have a movement stick, drag-to-look, and hop button.
+WASD/arrow keys walk; Shift runs; Space hops. Mouse look uses pointer lock where available, with drag-to-look as fallback. V toggles bird's-eye view; drag/scroll orbits/zooms there. The sun button changes the lighting. M expands the map; Escape pauses. “Back to house” returns to the starting location in the current world. Touch devices have a movement stick, drag-to-look, and hop button.
 
 ## Street-level detail pass (003)
 

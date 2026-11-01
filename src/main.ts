@@ -1,21 +1,21 @@
 import './style.css';
 import {asset} from './paths';
 import {createWorldHub} from './world-hub';
-import type {WorldBundle} from './world-pack';
+import {decodeWorld,type WorldBundle} from './world-pack';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { createScene } from './render';
 import { createPhysics } from './physics';
-import { loadSurvey, groundHeight } from './survey';
-import { hydrateWorld, HALF, nearest, type WorldData } from './world';
+import { groundHeight } from './survey';
+import { HALF, nearest, type WorldData } from './world';
 const app=document.querySelector<HTMLDivElement>('#app')!;
 app.innerHTML=`
-<canvas id="world" aria-label="Voxel neighborhood of Russell Street in Lewiston"></canvas>
+<canvas id="world" aria-label="Voxel campus around 1250 Turner Street in Auburn"></canvas>
 <div id="vignette"></div>
-<header><a class="brand" href="${asset('')}" aria-label="Blockwalk home"><span class="brand-icon"><i></i><i></i><i></i></span>blockwalk<span class="version">WORLD EXPLORER 004</span></a><div class="header-actions"><span class="live-dot"></span><span class="area-name" id="area-name">LEWISTON, MAINE</span><button id="worlds" class="worlds-button">◎ Worlds</button><button id="about" class="icon-btn" aria-label="About this world">i</button></div></header>
-<main id="welcome" class="welcome"><div class="eyebrow"><span></span>A REAL PLACE. A DIFFERENT PERSPECTIVE.</div><h1>Your neighborhood.<br>A little more <em>blocky.</em></h1><p><span id="world-title">Russell Street, rebuilt from aerial imagery and lidar.</span><br><span id="world-caption">Real slopes. Measured roofs. A closer look at home.</span></p><div class="intro-actions"><button id="start" class="primary" disabled><span id="start-label">Growing your neighborhood…</span><span class="arrow">↗</span></button><button id="preview" class="text-btn" disabled>Look around first <span>↗</span></button></div><div class="world-meta"><span id="world-meta-name">04 / RUSSELL STREET</span><span>720 × 720 M</span><span id="building-count">LOADING MAP DATA</span></div></main>
+<header><a class="brand" href="${asset('')}" aria-label="Blockwalk home"><span class="brand-icon"><i></i><i></i><i></i></span>blockwalk<span class="version">WORLD EXPLORER 004</span></a><div class="header-actions"><span class="live-dot"></span><span class="area-name" id="area-name">AUBURN, MAINE</span><button id="worlds" class="worlds-button">◎ Worlds</button><button id="about" class="icon-btn" aria-label="About this world">i</button></div></header>
+<main id="welcome" class="welcome"><div class="eyebrow"><span></span>A REAL PLACE. A DIFFERENT PERSPECTIVE.</div><h1>Your neighborhood.<br>A little more <em>blocky.</em></h1><p><span id="world-title">1250 Turner Street, Auburn, Maine.</span><br><span id="world-caption">Real slopes. Measured roofs. A closer look at home.</span></p><div class="intro-actions"><button id="start" class="primary" disabled><span id="start-label">Growing your neighborhood…</span><span class="arrow">↗</span></button><button id="preview" class="text-btn" disabled>Look around first <span>↗</span></button></div><div class="world-meta"><span id="world-meta-name">04 / TURNER STREET</span><span>720 × 720 M</span><span id="building-count">LOADING MAP DATA</span></div></main>
 <aside id="map-panel"><div class="map-top"><span>THE NEIGHBORHOOD</span><button id="map-toggle" aria-label="Expand neighborhood map">↗</button></div><canvas id="map" width="420" height="420" aria-label="Neighborhood map. Yellow arrow indicates your position."></canvas><div class="map-bottom"><span><i></i>YOU ARE HERE</span><span>N ↑</span></div></aside>
-<div id="hud" hidden><div class="location"><span class="live-dot"></span><div><small id="quality-label">SURVEY WORLD</small><strong id="street">Russell Street</strong></div></div><div class="mode-actions"><button id="view-mode">↗ Bird’s-eye view <kbd>V</kbd></button><button id="reset" aria-label="Return to the street outside the starting house">⌂ Back to house</button><button id="light" aria-label="Change lighting: Daylight" title="Change lighting">☀ <span class="light-label">Daylight</span></button><button id="pause">Ⅱ Pause</button></div></div>
+<div id="hud" hidden><div class="location"><span class="live-dot"></span><div><small id="quality-label">SURVEY WORLD</small><strong id="street">Turner Street</strong></div></div><div class="mode-actions"><button id="view-mode">↗ Bird’s-eye view <kbd>V</kbd></button><button id="reset" aria-label="Return to the street outside the starting house">⌂ Back to house</button><button id="light" aria-label="Change lighting: Daylight" title="Change lighting">☀ <span class="light-label">Daylight</span></button><button id="pause">Ⅱ Pause</button></div></div>
 <div id="crosshair" hidden></div>
 <div id="controls" hidden><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> walk</span><span>Mouse / drag to look</span><span><kbd>Shift</kbd> run</span><span><kbd>Space</kbd> hop</span><span><kbd>Esc</kbd> pause</span></div>
 <div id="distance" hidden>0 m wandered</div>
@@ -63,7 +63,7 @@ function frame(now:number){requestAnimationFrame(frame);const dt=Math.min((now-l
  view.lighting.update(mode==='walk'?view.camera.position:orbit.target);view.streetSigns.update(view.camera,mode==='walk');view.renderer.render(view.scene,view.camera);
 }
 let demoPromise:Promise<WorldBundle>|undefined;
-function loadDemo(){return demoPromise??=(async()=>{const [survey,layout,surface]=await Promise.all([loadSurvey(),fetch(asset('data/world-layout.json')).then(r=>{if(!r.ok)throw new Error('The demo layout could not be loaded');return r.json();}),fetch(asset('data/world-surface.bin')).then(async r=>{if(!r.ok)throw new Error('The demo streets could not be loaded');return new Uint8Array(await r.arrayBuffer());})]);return {data:hydrateWorld(layout,surface,survey),info:{title:'Russell Street',location:'Lewiston, Maine, USA',origin:{lat:44.1009685,lon:-70.1876829},quality:'survey' as const,createdAt:'2026-10-31T00:00:00Z',sources:['© OpenStreetMap contributors · ODbL 1.0','Microsoft Global ML Building Footprints · CDLA Permissive 2.0','USGS 3DEP elevation and 2020 lidar · public domain','USDA NAIP / USGS aerial imagery · public domain'],warnings:['Facade paint, windows, doors, entrance steps, and street-sign positions are inferred. Survey sources have different collection dates.']}};})();}
+function loadDemo(){return demoPromise??=(async()=>{const response=await fetch(asset('data/demo.blockwalk'));if(!response.ok)throw new Error('The demo world could not be loaded');return decodeWorld(new Uint8Array(await response.arrayBuffer()));})();}
 async function activate(bundle:WorldBundle,fromHub=true){
  const ticket=++activationSerial;switching=true;keys.clear();document.exitPointerLock?.();let nextView:ReturnType<typeof createScene>|undefined,nextPhysics:Awaited<ReturnType<typeof createPhysics>>|undefined;
  try{nextView=createScene(canvas,bundle.data);nextPhysics=await createPhysics(bundle.data,nextView.trees,nextView.colliders);if(ticket!==activationSerial){nextPhysics.world.free();nextView.dispose();return;}
