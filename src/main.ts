@@ -64,7 +64,7 @@ function frame(now:number){requestAnimationFrame(frame);const dt=Math.min((now-l
  view.lighting.update(mode==='walk'?view.camera.position:orbit.target);view.streetSigns.update(view.camera,mode==='walk');view.renderer.render(view.scene,view.camera);
 }
 let demoPromise:Promise<WorldBundle>|undefined;
-function loadDemo(){return demoPromise??=(async()=>{const response=await fetch(asset('data/demo.blockwalk'));if(!response.ok)throw new Error('The demo world could not be loaded');return decodeWorld(new Uint8Array(await response.arrayBuffer()));})();}
+function loadDemo(){return demoPromise??=(async()=>{const response=await fetch(asset('data/demo.blockwalk'),{cache:'no-cache'});if(!response.ok)throw new Error('The demo world could not be loaded');return decodeWorld(new Uint8Array(await response.arrayBuffer()));})();}
 async function activate(bundle:WorldBundle,fromHub=true){
  const ticket=++activationSerial;switching=true;keys.clear();document.exitPointerLock?.();let nextView:ReturnType<typeof createScene>|undefined,nextPhysics:Awaited<ReturnType<typeof createPhysics>>|undefined;
  try{nextView=createScene(canvas,bundle.data);nextPhysics=await createPhysics(bundle.data,nextView.trees,nextView.colliders);if(ticket!==activationSerial){nextPhysics.world.free();nextView.dispose();return;}
