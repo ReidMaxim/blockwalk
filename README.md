@@ -1,6 +1,6 @@
 # Blockwalk · Portable voxel worlds
 
-A static browser app that turns real locations into walkable voxel neighborhoods. Search an address or enter coordinates, generate an area, download it as a portable `.blockwalk` world, and load saved worlds locally. The default demo is centered at 1250 Turner Street, Auburn, Maine: Central Maine Community College (44.1321115, -70.2320624). It loads from the bundled `public/data/demo.blockwalk` world file; the original Russell Street survey remains as a regression-test fixture.
+A static browser app that turns real locations into walkable voxel neighborhoods. Search an address or enter coordinates, generate an area, download it as a portable `.blockwalk` world, and load saved worlds locally. The default demo is centered at 1250 Turner Street, Auburn, Maine: Central Maine Community College. Its 720m area is centered at 44.1336, -70.2368 to favor campus grounds, woods, fields, and Lake Auburn. The spawn is the apex of the front drop-off loop (44.1340722, -70.2348581), facing the entrance. It loads from the bundled `public/data/demo.blockwalk` world file; the original Russell Street survey remains as a regression-test fixture.
 
 ## Run
 
