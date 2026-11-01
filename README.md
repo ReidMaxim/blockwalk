@@ -1,6 +1,6 @@
 # Blockwalk · Portable voxel worlds
 
-A static browser app that turns real locations into walkable voxel neighborhoods. Search an address or enter coordinates, generate an area, download it as a portable `.blockwalk` world, and load saved worlds locally. The default demo is centered at 1250 Turner Street, Auburn, Maine: Central Maine Community College. Its 720m area is centered at 44.1336, -70.2368 to favor campus grounds, woods, fields, and Lake Auburn. The spawn is the apex of the front drop-off loop (44.1340722, -70.2348581), facing the entrance. It loads from the bundled `public/data/demo.blockwalk` world file; the original Russell Street survey remains as a regression-test fixture.
+A static browser app that turns real locations into walkable voxel neighborhoods. Search an address or enter coordinates, generate an area, download it as a portable `.blockwalk` world, and load saved worlds locally. The default demo is centered at 1250 Turner Street, Auburn, Maine: Central Maine Community College. Its 720m area is centered at 44.1336, -70.2357 to favor campus grounds, woods, fields, and Lake Auburn. The spawn is the apex of the front drop-off loop (44.1340722, -70.2348581), facing the entrance. It loads from the bundled `public/data/demo.blockwalk` world file; the original Russell Street survey remains as a regression-test fixture.
 
 ## Run
 
@@ -11,7 +11,7 @@ npm run dev
 
 Open the printed localhost URL. `npm run build` creates `dist/`; `npm test` runs geographic, survey, roof-fitting, and physics checks.
 
-WASD/arrow keys walk; Shift runs; Space hops. Mouse look uses pointer lock where available, with drag-to-look as fallback. V toggles bird's-eye view; drag/scroll orbits/zooms there. The sun button changes the lighting. M expands the map; Escape pauses. “Back to house” returns to the starting location in the current world. Touch devices have a movement stick, drag-to-look, and hop button.
+WASD/arrow keys walk; Shift runs; Space hops. Mouse look uses pointer lock where available, with drag-to-look as fallback. V toggles bird's-eye view; WASD/arrow keys pan relative to the camera, Shift pans faster, and drag/scroll orbits/zooms. The overview starts centered on the whole area. The sun button changes the lighting. M expands the map; Escape pauses. “Back to house” returns to the starting location in the current world. Touch devices have a movement stick, drag-to-look, and hop button.
 
 ## Street-level detail pass (003)
 

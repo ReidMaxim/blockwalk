@@ -64,3 +64,12 @@ test('US footprint queries recover from an unavailable tile download and retain 
  const {microsoftBuildings}=await import('./generation-providers.ts');const {defaults}=await import('./generation-types.ts');const original=globalThis.fetch;const calls=[];globalThis.fetch=async input=>{const url=String(input);calls.push(url);if(url===defaults.buildingIndex)throw new TypeError('Blocked tile request');return new Response(JSON.stringify({type:'FeatureCollection',features:[{type:'Feature',properties:{OBJECTID:1},geometry:{type:'Polygon',coordinates:[[[-70.187,44.101],[-70.1869,44.101],[-70.1869,44.1011],[-70.187,44.101]]]}}]}),{headers:{'content-type':'application/json'}});};
  try{const result=await microsoftBuildings({lat:44.101,lon:-70.187},defaults,()=>{});assert.equal(result.features.length,1);assert.match(result.source,/ODbL/);const request=new URL(calls[1]);assert.equal(request.searchParams.get('resultRecordCount'),'2000');assert.equal(request.searchParams.get('geometryType'),'esriGeometryEnvelope');assert.equal(request.searchParams.get('outSR'),'4326');}finally{globalThis.fetch=original;}
 });
+
+test('bird’s-eye panning follows the camera, normalizes diagonals, and stays inside the area',async()=>{
+ const {overviewPan}=await import('./overview-pan.ts');
+ assert.deepEqual(overviewPan(0,-1,0,1,.05,false,0,0),{x:0,z:-4});
+ assert.deepEqual(overviewPan(1,0,0,1,.05,false,0,0),{x:4,z:0});
+ const diagonal=overviewPan(0,-1,1,1,.05,false,0,0);assert.ok(Math.abs(Math.hypot(diagonal.x,diagonal.z)-4)<1e-6);
+ assert.deepEqual(overviewPan(0,-1,1,0,.05,true,349,0),{x:1,z:0});
+ assert.deepEqual(overviewPan(0,-1,0,0,.05,false,0,0),{x:0,z:0});
+});
