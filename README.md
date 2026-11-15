@@ -1,6 +1,8 @@
 # Blockwalk · Portable voxel worlds
 
-A static browser app that turns real locations into walkable voxel neighborhoods. Search an address or enter coordinates, generate an area, download it as a portable `.blockwalk` world, and load saved worlds locally. The default demo is centered at 1250 Turner Street, Auburn, Maine: Central Maine Community College. Its 720m area is centered at 44.1336, -70.2357 to favor campus grounds, woods, fields, and Lake Auburn. The spawn is the apex of the front drop-off loop (44.1340722, -70.2348581), facing the entrance. It loads from the bundled `public/data/demo.blockwalk` world file; the original Russell Street survey remains as a regression-test fixture.
+A static browser app that turns real locations into walkable voxel neighborhoods. Search an address or enter coordinates, generate an area, download it as a portable `.blockwalk` world, and load saved worlds locally. The default demo is Augusta Civic Center, 76 Community Drive, Augusta, Maine 04330, prepared for the November 17, 2026 event. Its 720m area is centered at 44.3425925, -69.7988986. The safe starting point is on Community Drive east of the venue, facing the Civic Center. It loads from the bundled `public/data/demo.blockwalk` file, so visitors do not need to generate a world or contact map services at startup. The original Russell Street survey remains a regression-test fixture.
+
+The Civic Center bundle was generated on November 14, 2026 (local time) with the app’s **Best available** mode: OpenStreetMap, Microsoft US footprints via Esri, USGS 3DEP elevation and 2020 LiDAR, and USDA NAIP imagery. It includes 28 buildings and 3,209,149 LiDAR samples; attribution and accuracy limitations are embedded in the world file. To prepare another event location, generate its world in Worlds, download the file, validate it with `decodeWorld`, set its descriptive title/location, and replace `public/data/demo.blockwalk`; keep the historical test survey unchanged. The earlier campus demo can be retrieved from Git history or regenerated through Worlds.
 
 ## Run
 
@@ -90,4 +92,4 @@ The Worlds button searches explicit user queries through Photon, accepts latitud
 
 The application builds to static files with relative asset paths, including the generation worker and lidar WASM. `.github/workflows/pages.yml` builds, tests, and deploys `dist` when the repository's Pages source is set to **GitHub Actions**. It supports both account-root and `/repository/` URLs without a backend or API keys. The current Sites sign-in layer is hosting-specific and does not carry into GitHub Pages.
 
-New user worlds stay on their device unless they explicitly download/share the file. The repository includes one prepared Lewiston demo; it does not collect generated neighborhoods. Public service limits still apply independently of static hosting.
+New user worlds stay on their device unless they explicitly download/share the file. The repository includes one prepared Augusta Civic Center demo; it does not collect generated neighborhoods. Public service limits still apply independently of static hosting.
