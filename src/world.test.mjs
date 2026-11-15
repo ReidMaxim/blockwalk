@@ -6,6 +6,25 @@ import { fitRoof } from './roof.ts';
 import { createPhysics } from './physics.ts';
 import { loadTestWorld } from './test-data.mjs';
 const data=loadTestWorld();
+test('default event world opens at Augusta Civic Center with a clear, grounded starting point',async()=>{
+ const fs=await import('node:fs');const {decodeWorld}=await import('./world-pack.ts');
+ const bundle=decodeWorld(new Uint8Array(fs.readFileSync(new URL('../public/data/demo.blockwalk',import.meta.url))));
+ assert.equal(bundle.info.title,'Augusta Civic Center');
+ assert.ok(Math.abs(bundle.info.origin.lat-44.3425925)<1e-7);
+ assert.ok(Math.abs(bundle.info.origin.lon+69.7988986)<1e-7);
+ assert.equal(bundle.info.quality,'survey');
+ const world=bundle.data;
+ assert.equal(world.focus.id,408674880);
+ assert.ok(Math.hypot(world.focus.center.x,world.focus.center.z)<20);
+ assert.ok(world.roads.some(road=>road.name==='Community Drive'));
+ assert.ok(world.survey.metadata.lidarPoints>3e6);
+ const index=gridIndex(world.spawn.x,world.spawn.z);
+ assert.equal(world.occupied[index],0);assert.equal(world.surface[index],2);
+ const physics=await createPhysics(world,[]);
+ try{for(let i=0;i<120;i++)physics.step(0,0,false);const p=physics.position();
+ assert.ok(Math.abs(p.y-groundHeight(world.survey,p.x,p.z)-.875)<.15);
+ }finally{physics.world.free();}
+});
 test('address maps to local origin, focus footprint contains it, spawn faces it from a road',()=>{assert.deepEqual(project(-70.1876829,44.1009685),{x:0,z:-0});assert.ok(inside({x:0,z:0},data.focus.points));assert.ok(data.focus.measured);assert.ok(data.buildings.length>300);const i=gridIndex(data.spawn.x,data.spawn.z);assert.equal(data.occupied[i],0);assert.equal(data.surface[i],2);assert.ok(Math.hypot(data.spawn.x,data.spawn.z)<50);});
 test('survey retains real elevation range and measured roof shapes',()=>{assert.ok(data.survey.metadata.lidarPoints>2e6);const elevations=data.survey.metadata.elevationRange;assert.ok(elevations[1]-elevations[0]>20);assert.ok(Math.abs(groundHeight(data.survey,0,0))<.01);assert.ok(data.buildings.filter(b=>b.measured).length>350);assert.ok(Math.max(...data.focus.tops)-Math.min(...data.focus.tops)>1);assert.ok(data.focus.height<9);});
 test('voxel footprints stay within source outlines and measured roofs remain above terrain',()=>{const seen=new Set();for(const b of data.buildings){assert.equal(b.tops.length,b.cells.length);for(let n=0;n<b.cells.length;n++){const p=b.cells[n];assert.ok(Math.abs(p.x)<HALF&&Math.abs(p.z)<HALF);assert.ok(inside(p,b.points));assert.ok(Number.isFinite(b.tops[n])&&b.tops[n]>b.base+1.5);const i=gridIndex(p.x,p.z);assert.ok(!seen.has(i));seen.add(i);}}});
